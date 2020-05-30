@@ -16,22 +16,55 @@ const PaginationTwo = (props) => {
     const start = value - postPerPage;
     const end = value;
     onHandlePost(start, end);
-  }, [countPages, onHandlePost, postPerPage]);
+    console.log(countPages); // eslint-disable-next-line
+  }, [countPages]);
+  const handlePage = (e) => {
+    setCountPages(e.target.textContent);
+  };
+  const postsPages = [];
+  const pagesTotal = () => {
+    for (let i = 1; i <= pages; i++) {
+      if (i === countPages) {
+        postsPages.push(
+          <li
+            key={i}
+            className="page-item active"
+            id={i}
+            onClick={(e) => handlePage(e)}>
+            <button className="page-link">{i}</button>
+          </li>
+        );
+      } else {
+        postsPages.push(
+          <li
+            key={i}
+            className="page-item"
+            id={i}
+            onClick={(e) => handlePage(e)}>
+            <button className="page-link">{i}</button>
+          </li>
+        );
+      }
+    }
+  };
+  pagesTotal();
   return (
     <div className="col-md-12 pagination d-flex justify-content-around py-5">
-      <button
-        href="/#"
-        className="btn btn-outline-primary"
-        onClick={() => handleCount('prev')}>
-        Prev
-      </button>
-      Pagination two
-      <button
-        href="/#"
-        className="btn btn-outline-primary"
-        onClick={() => handleCount('next')}>
-        Next
-      </button>
+      <nav aria-label="Page navigation example">
+        <ul className="pagination justify-content-center">
+          <li className="page-item">
+            <button className="page-link" onClick={() => handleCount('prev')}>
+              Previous
+            </button>
+          </li>
+          {postsPages.map((postPage) => postPage)}
+          <li className="page-item">
+            <button className="page-link" onClick={() => handleCount('next')}>
+              Next
+            </button>
+          </li>
+        </ul>
+      </nav>
     </div>
   );
 };
